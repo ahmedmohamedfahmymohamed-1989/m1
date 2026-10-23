@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>موقع التحقق والرندرة</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            /* التدرج اللوني المظبوط المطابق للصورة */
+            background: linear-gradient(135deg, #0d2137 0%, #0e5a77 50%, #00796b 100%);
+            background-attachment: fixed;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            color: #fff;
+        }
+
+        /* الصفحة الأولى: التخطيط كاملاً */
+        .page-one-wrapper {
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* العنوان الرئيسي العريض في الأعلى */
+        .main-header {
+            font-size: 38px;
+            font-weight: bold;
+            margin-bottom: 40px;
+            text-align: center;
+            color: #ffffff;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        /* محتوى الصفحة الأولى (الكارت على اليسار والمعلومات على اليمين) */
+        .auth-content-layout {
+            display: flex;
+            width: 100%;
+            justify-content: center;
+            align-items: center;
+            gap: 60px;
+            flex-direction: row-reverse; /* لجعل كارت الكود في الوسط ومعلومات التواصل على اليمين */
+        }
+
+        /* كارت أدخل كود الدخول الشخصى المطبق كالصورة */
+        .auth-container {
+            background: #eef5f8;
+            padding: 35px 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            width: 420px;
+            color: #2c3e50;
+        }
+
+        .auth-container h2 {
+            margin-top: 0;
+            font-size: 24px;
+            color: #1a252f;
+            margin-bottom: 10px;
+        }
+
+        .auth-container p {
+            color: #7f8c8d;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            font-size: 18px;
+            letter-spacing: 6px;
+            text-align: center;
+            border: 1.5 solid #0e7490;
+            border-radius: 8px;
+            outline: none;
+            background: #ffffff;
+            color: #2c3e50;
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus {
+            border-color: #00796b;
+            box-shadow: 0 0 8px rgba(14, 116, 144, 0.4);
+        }
+
+        /* النصوص الجانبية الموجودة على يمين الكارت */
+        .side-info {
+            flex: 1;
+            max-width: 450px;
+            text-align: right;
+            font-size: 15px;
+            line-height: 1.8;
+            color: #e0f2f1;
+        }
+
+        .side-info .info-block {
+            margin-bottom: 25px;
+        }
+
+        .side-info .info-title {
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .side-info .contact-title {
+            font-size: 15px;
+            margin-bottom: 15px;
+            color: #ffffff;
+        }
+
+        .side-info .phone-table {
+            display: flex;
+            justify-content: flex-start;
+            gap: 40px;
+            margin-top: 10px;
+        }
+
+        .side-info .phone-labels {
+            text-align: right;
+            color: #b2dfdb;
+        }
+
+        .side-info .phone-numbers {
+            text-align: left;
+            direction: ltr;
+            font-weight: bold;
+            color: #ffffff;
+        }
+
+        /* ------------------ الصفحة الثانية (صفحة الرندر) ------------------ */
+        button {
+            background: linear-gradient(135deg, #0e7490, #047857);
+            color: white;
+            border: none;
+            padding: 14px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 8px;
+            margin-top: 20px;
+            width: 100%;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 15px rgba(14, 116, 144, 0.4);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(4, 120, 87, 0.5);
+        }
+
+        button:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        #render-section {
+            display: none;
+            width: 100%;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .dashboard-layout {
+            display: flex;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            gap: 40px;
+            align-items: center;
+            max-width: 1400px;
+            width: 95vw;
+            margin: 0 auto;
+            flex-direction: row-reverse;
+            color: #333;
+        }
+
+        .preview-container {
+            flex: 2;
+            height: 650px;
+            border: 2px dashed #0e7490;
+            border-radius: 14px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            background-color: #f8fafc;
+            position: relative;
+        }
+
+        .preview-container img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .preview-placeholder {
+            color: #64748b;
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        .controls-panel {
+            flex: 1;
+            text-align: right;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .balance-box {
+            font-size: 18px;
+            font-weight: bold;
+            color: #0e7490;
+            margin: 10px 0 20px 0;
+            background: #f0fdf4;
+            padding: 10px 15px;
+            border-radius: 8px;
+            border-right: 4px solid #047857;
+            display: inline-block;
+        }
+
+        .file-upload-label {
+            display: block;
+            background: linear-gradient(135deg, #0284c7, #0e7490);
+            color: white;
+            padding: 14px;
+            text-align: center;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 15px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        #image-input {
+            display: none;
+        }
+
+        .contact-info-page2 {
+            margin-top: 30px;
+            font-size: 13px;
+            line-height: 1.7;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 15px;
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .contact-info-page2 .title {
+            color: #0e7490;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- القسم الأول: واجهة إدخال الكود الرئيسية -->
+    <div id="auth-section" class="page-one-wrapper">
+        
+        <!-- العنوان الرئيسي -->
+        <div class="main-header">مرحبا بكم فى موقع تحسين الصور</div>
+
+        <div class="auth-content-layout">
+            
+            <!-- كارت أدخل كود الدخول الشخصى في المنتصف -->
+            <div class="auth-container">
+                <h2>أدخل كود الدخول الشخصى</h2>
+                <p>برجاء كتابة الكود المكون من 8 خانات للدخول</p>
+                <input type="text" id="code-input" maxlength="8" placeholder="- - - - - - - -" autocomplete="off">
+                <p id="auth-error" style="color: #e74c3c; margin-top: 12px; font-weight: bold;"></p>
+            </div>
+
+            <!-- النصوص الجانبية على اليمين كما بالصورة -->
+            <div class="side-info">
+                <div class="info-block">
+                    <div class="info-title">يقدم الموقع خدمة تحسين الصورة</div>
+                    <div class="info-title">صاحب الموقع</div>
+                    <div class="info-title">مهندس معماري : أحمد محمد فهمي</div>
+                </div>
+
+                <div class="info-block">
+                    <div class="contact-title">لخطة الاسعار والاشتراك والتجديد التواصل مع مسؤل إدارة الموقع واتساب او اتصال</div>
+                    
+                    <div class="phone-table">
+                        <div class="phone-labels">
+                            <div>من داخل مصر</div>
+                            <div>من خارج مصر</div>
+                        </div>
+                        <div class="phone-numbers">
+                            <div>01273135757</div>
+                            <div>00201273135757</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- القسم الثاني: واجهة الرندر -->
+    <div id="render-section">
+        <div class="dashboard-layout">
+            
+            <!-- المربع الكبير لعرض أو معاينة الصورة (على اليمين) -->
+            <div class="preview-container" id="preview-container">
+                <span class="preview-placeholder">ستظهر الصورة هنا بعد الرفع وبعد التحسين</span>
+            </div>
+
+            <!-- لوحة التحكم والأزرار والنصوص (على اليسار) -->
+            <div class="controls-panel">
+                <h2 style="margin-top: 0;">مرحباً بك </h2>
+                <div>
+                    <div class="balance-box">رصيدك الحالي: <span id="balance-display">0</span> نقطة</div>
+                </div>
+                
+                <!-- زر رفع الصورة -->
+                <label for="image-input" class="file-upload-label">اضغط هنا لرفع الصورة</label>
+                <input type="file" id="image-input" accept="image/*">
+
+                <!-- زر بدء تحسين جودة الصورة -->
+                <button id="render-btn" disabled>بدء تحسين جودة الصورة</button>
+
+                <p id="render-status" style="margin-top: 15px; font-weight: bold; font-size: 14px;"></p>
+
+                <!-- قسم التواصل والأسعار -->
+                <div class="contact-info-page2">
+                    <div class="title">لخطة الاسعار والاشتراك والتجديد التواصل مع مسؤل ادارة الموقع واتساب او اتصال :</div>
+                    <div style="font-weight: bold; color: #0f172a;">
+                        <div>من داخل مصر: 01273135757</div>
+                        <div>من خارج مصر: 00201273135757</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        const codeInput = document.getElementById('code-input');
+        const authSection = document.getElementById('auth-section');
+        const renderSection = document.getElementById('render-section');
+        const authError = document.getElementById('auth-error');
+        const balanceDisplay = document.getElementById('balance-display');
+        
+        const imageInput = document.getElementById('image-input');
+        const previewContainer = document.getElementById('preview-container');
+        const renderBtn = document.getElementById('render-btn');
+        const renderStatus = document.getElementById('render-status');
+
+        let verifiedCode = "";
+        let selectedImageBase64 = "";
+
+        // 1. التحقق من الكود المكون من 8 خانات
+        codeInput.addEventListener('input', (e) => {
+            const currentCode = e.target.value.trim();
+            authError.textContent = "";
+
+            if (currentCode.length === 8) {
+                fetch('/api/verify', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ code: currentCode, action: 'verify' })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        verifiedCode = currentCode;
+                        balanceDisplay.textContent = data.credits;
+                        authSection.style.display = 'none';
+                        renderSection.style.display = 'flex';
+                    } else {
+                        authError.textContent = data.message;
+                    }
+                })
+                .catch(err => {
+                    authError.textContent = "حدث خطأ في الاتصال بالسيرفر";
+                });
+            }
+        });
+
+        // 2. معاينة الصورة فور رفعها محلياً وحفظ بياناتها
+        imageInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    selectedImageBase64 = event.target.result;
+                    previewContainer.innerHTML = `<img src="${selectedImageBase64}" alt="معاينة الصورة">`;
+                    renderBtn.disabled = false; // تفعيل زر البدء بعد اختيار الصورة
+                    renderStatus.textContent = "";
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // 3. إرسال الصورة للسيرفر لتنفيذ الرندر وخصم النقطة عبر fal
+        renderBtn.addEventListener('click', () => {
+            if (!selectedImageBase64) return;
+
+            renderStatus.textContent = "جارى التحسين ...";
+            renderStatus.style.color = "#0e7490";
+            renderBtn.disabled = true;
+            imageInput.disabled = true;
+
+            fetch('/api/verify', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    code: verifiedCode, 
+                    action: 'render', 
+                    image: selectedImageBase64 
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                renderBtn.disabled = false;
+                imageInput.disabled = false;
+                
+                if (data.success) {
+                    balanceDisplay.textContent = data.credits;
+                    renderStatus.textContent = "تم الرندر وتحسين الجودة واستهلاك نقطة!";
+                    renderStatus.style.color = "#047857";
+                    
+                    // استبدال الصورة القديمة بالصورة الناتجة من الرندر
+                    previewContainer.innerHTML = `<img src="${data.outputUrl}" alt="الصورة الناتجة">`;
+                    selectedImageBase64 = data.outputUrl; // تحديث النسخة الحالية لتصبح الناتجة
+                } else {
+                    renderStatus.textContent = data.message;
+                    renderStatus.style.color = "#ef4444";
+                    if (data.credits === 0) {
+                        renderBtn.disabled = true;
+                    }
+                }
+            })
+            .catch(err => {
+                renderBtn.disabled = false;
+                imageInput.disabled = false;
+                renderStatus.textContent = "حدث خطأ أثناء الاتصال بالسيرفر للرندر";
+                renderStatus.style.color = "#ef4444";
+            });
+        });
+    </script>
+</body>
+</html>
